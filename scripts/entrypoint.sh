@@ -52,7 +52,7 @@ if [ "${GLUU_PERSISTENCE_TYPE}" = "hybrid" ]; then
 fi
 
 # run wait_for functions
-deps="config,secret"
+deps="config,secret,oxauth"
 
 if [ "${GLUU_PERSISTENCE_TYPE}" = "hybrid" ]; then
     deps="${deps},ldap,couchbase"
