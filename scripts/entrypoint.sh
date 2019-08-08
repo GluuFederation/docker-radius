@@ -52,13 +52,15 @@ if [ "${GLUU_PERSISTENCE_TYPE}" = "hybrid" ]; then
 fi
 
 # run wait_for functions
-deps="config,secret,oxauth"
+deps="config,secret"
 
 if [ "${GLUU_PERSISTENCE_TYPE}" = "hybrid" ]; then
     deps="${deps},ldap,couchbase"
 else
     deps="${deps},${GLUU_PERSISTENCE_TYPE}"
 fi
+
+deps="$deps,oxauth"
 
 if [ -f /etc/redhat-release ]; then
     source scl_source enable python27 && gluu-wait --deps="$deps"
