@@ -33,25 +33,15 @@ RUN wget -q https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/
 EXPOSE 8080
 
 # ======
-# Jython
-# ======
-
-ENV JYTHON_VERSION=2.7.2a1
-RUN wget -q https://ox.gluu.org/dist/jython/${JYTHON_VERSION}/jython-installer.jar -O /tmp/jython-installer.jar \
-    && mkdir -p /opt/jython \
-    && java -jar /tmp/jython-installer.jar -v -s -d /opt/jython -t standard -e ensurepip \
-    && rm -f /tmp/jython-installer.jar
-
-# ======
 # Radius
 # ======
 
-ENV OX_VERSION=4.0.0-SNAPSHOT \
-    OX_BUILD_DATE=2019-07-10
+ENV GLUU_VERSION=4.0.0-SNAPSHOT \
+    GLUU_BUILD_DATE="2019-08-08 14:53"
 
 RUN mkdir -p /opt/gluu/radius \
-    && wget -q https://ox.gluu.org/maven/org/gluu/super-gluu-radius-server/${OX_VERSION}/super-gluu-radius-server-${OX_VERSION}.jar -O /opt/gluu/radius/super-gluu-radius-server.jar \
-    && wget -q https://ox.gluu.org/maven/org/gluu/super-gluu-radius-server/${OX_VERSION}/super-gluu-radius-server-${OX_VERSION}-distribution.zip -O /tmp/gluu-radius-libs.zip \
+    && wget -q https://ox.gluu.org/maven/org/gluu/super-gluu-radius-server/${GLUU_VERSION}/super-gluu-radius-server-${GLUU_VERSION}.jar -O /opt/gluu/radius/super-gluu-radius-server.jar \
+    && wget -q https://ox.gluu.org/maven/org/gluu/super-gluu-radius-server/${GLUU_VERSION}/super-gluu-radius-server-${GLUU_VERSION}-distribution.zip -O /tmp/gluu-radius-libs.zip \
     && unzip -n -q /tmp/gluu-radius-libs.zip -d /opt/gluu/radius \
     && rm /tmp/gluu-radius-libs.zip
 
@@ -137,6 +127,14 @@ ENV GLUU_MAX_RAM_PERCENTAGE=25.0 \
 # ==========
 # misc stuff
 # ==========
+
+LABEL name="Radius" \
+    maintainer="Gluu Inc. <support@gluu.org>" \
+    vendor="Gluu Federation" \
+    version="4.0.0" \
+    release="dev" \
+    summary="Gluu RADIUS" \
+    description="RADIUS integration for Gluu Server"
 
 RUN mkdir -p /etc/certs \
     /deploy \
