@@ -37,7 +37,7 @@ EXPOSE 8080
 # ======
 
 ENV GLUU_VERSION=4.0.0-SNAPSHOT \
-    GLUU_BUILD_DATE="2019-08-08 14:53"
+    GLUU_BUILD_DATE=2019-08-12
 
 RUN mkdir -p /opt/gluu/radius \
     && wget -q https://ox.gluu.org/maven/org/gluu/super-gluu-radius-server/${GLUU_VERSION}/super-gluu-radius-server-${GLUU_VERSION}.jar -O /opt/gluu/radius/super-gluu-radius-server.jar \
@@ -145,6 +145,7 @@ RUN mkdir -p /etc/certs \
 COPY static/gluu-radius-logging.xml /etc/gluu/conf/radius/
 COPY templates /app/templates
 COPY scripts /app/scripts
+RUN chmod +x /app/scripts/entrypoint.sh
 
 # # create non-root user
 # RUN useradd -ms /bin/sh --uid 1000 jetty \
@@ -163,4 +164,4 @@ COPY scripts /app/scripts
 # USER 1000
 
 ENTRYPOINT ["tini", "-g", "--"]
-CMD ["sh", "/app/scripts/entrypoint.sh"]
+CMD ["/app/scripts/entrypoint.sh"]
