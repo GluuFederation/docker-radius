@@ -77,6 +77,13 @@ if [ ! -f /deploy/touched ]; then
     fi
 
     import_ssl_cert
+
+    # workaround for incorrect gluu-radius.properties config in 4.0.b3
+    # TODO: remove these hacks after new build is ready
+    sed -i "s/enabled/enable/g" /etc/gluu/conf/radius/gluu-radius.properties
+    sed -i "s/singlefactor/onestep/g" /etc/gluu/conf/radius/gluu-radius.properties
+    sed -i "s/twofactor/twostep/g" /etc/gluu/conf/radius/gluu-radius.properties
+
     touch /deploy/touched
 fi
 
