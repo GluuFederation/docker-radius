@@ -32,6 +32,8 @@ RUN wget -q https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/
 # Ports required by jetty
 EXPOSE 8080
 
+# Radius ports
+EXPOSE 1812 1813
 # ======
 # Radius
 # ======
