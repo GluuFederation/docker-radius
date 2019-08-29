@@ -33,7 +33,7 @@ RUN wget -q https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/
 EXPOSE 8080
 
 # Radius ports
-EXPOSE 1812 1813
+EXPOSE 1812/udp 1813/udp
 # ======
 # Radius
 # ======
