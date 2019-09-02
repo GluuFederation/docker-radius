@@ -47,15 +47,11 @@ def get_couchbase_mappings():
         },
         "user": {
             "bucket": "gluu_user",
-            "mapping": "people, groups"
+            "mapping": "people, groups, authorizations"
         },
         "cache": {
             "bucket": "gluu_cache",
             "mapping": "cache",
-        },
-        "statistic": {
-            "bucket": "gluu_statistic",
-            "mapping": "statistic",
         },
         "site": {
             "bucket": "gluu_site",
@@ -68,10 +64,6 @@ def get_couchbase_mappings():
         "token": {
             "bucket": "gluu_token",
             "mapping": "tokens",
-        },
-        "client": {
-            "bucket": "gluu_client",
-            "mapping": "clients",
         },
     }
 
