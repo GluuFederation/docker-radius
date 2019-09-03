@@ -1,5 +1,5 @@
 import os
-import re
+# import re
 
 from pygluu.containerlib import get_manager
 
@@ -159,48 +159,6 @@ def render_gluu_properties():
             fw.write(rendered_txt)
 
 
-def modify_jetty_xml():
-    fn = "/opt/jetty/etc/jetty.xml"
-    with open(fn) as f:
-        txt = f.read()
-
-    # disable contexts
-    updates = re.sub(
-        r'<New id="DefaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler"/>',
-        r'<New id="DefaultHandler" class="org.eclipse.jetty.server.handler.DefaultHandler">\n\t\t\t\t <Set name="showContexts">false</Set>\n\t\t\t </New>',
-        txt,
-        flags=re.DOTALL | re.M,
-    )
-
-    # disable Jetty version info
-    updates = re.sub(
-        r'(<Set name="sendServerVersion"><Property name="jetty.httpConfig.sendServerVersion" deprecated="jetty.send.server.version" default=")true(" /></Set>)',
-        r'\1false\2',
-        updates,
-        flags=re.DOTALL | re.M,
-    )
-
-    with open(fn, "w") as f:
-        f.write(updates)
-
-
-def modify_webdefault_xml():
-    fn = "/opt/jetty/etc/webdefault.xml"
-    with open(fn) as f:
-        txt = f.read()
-
-    # disable dirAllowed
-    updates = re.sub(
-        r'(<param-name>dirAllowed</param-name>)(\s*)(<param-value>)true(</param-value>)',
-        r'\1\2\3false\4',
-        txt,
-        flags=re.DOTALL | re.M,
-    )
-
-    with open(fn, "w") as f:
-        f.write(updates)
-
-
 def render_radius_properties():
     with open("/app/templates/gluu-radius.properties.tmpl") as fr:
         txt = fr.read()
@@ -243,9 +201,6 @@ def main():
     manager.secret.to_file("ssl_key", "/etc/certs/gluu_https.key")
     manager.secret.to_file("radius_jks_base64", "/etc/certs/gluu-radius.jks",
                            decode=True, binary_mode=True)
-
-    modify_jetty_xml()
-    modify_webdefault_xml()
 
 
 if __name__ == "__main__":

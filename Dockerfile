@@ -11,27 +11,6 @@ RUN apk update && apk add --no-cache \
     openssl \
     git
 
-# =====
-# Jetty
-# =====
-
-ENV JETTY_VERSION=9.4.15.v20190215 \
-    JETTY_HOME=/opt/jetty \
-    JETTY_BASE=/opt/gluu/jetty \
-    JETTY_USER_HOME_LIB=/home/jetty/lib
-
-# Install jetty
-RUN wget -q https://repo1.maven.org/maven2/org/eclipse/jetty/jetty-distribution/${JETTY_VERSION}/jetty-distribution-${JETTY_VERSION}.tar.gz -O /tmp/jetty.tar.gz \
-    && mkdir -p /opt \
-    && tar -xzf /tmp/jetty.tar.gz -C /opt \
-    && mv /opt/jetty-distribution-${JETTY_VERSION} ${JETTY_HOME} \
-    && rm -rf /tmp/jetty.tar.gz \
-    && cp ${JETTY_HOME}/etc/webdefault.xml ${JETTY_HOME}/etc/webdefault.xml.bak \
-    && cp ${JETTY_HOME}/etc/jetty.xml ${JETTY_HOME}/etc/jetty.xml.bak
-
-# Ports required by jetty
-EXPOSE 8080
-
 # ======
 # Radius
 # ======
@@ -44,6 +23,9 @@ RUN mkdir -p /opt/gluu/radius \
     && wget -q https://ox.gluu.org/maven/org/gluu/super-gluu-radius-server/${GLUU_VERSION}/super-gluu-radius-server-${GLUU_VERSION}-distribution.zip -O /tmp/gluu-radius-libs.zip \
     && unzip -n -q /tmp/gluu-radius-libs.zip -d /opt/gluu/radius \
     && rm /tmp/gluu-radius-libs.zip
+
+# Radius ports
+EXPOSE 1812/udp 1813/udp
 
 # ====
 # Tini
