@@ -16,7 +16,7 @@ RUN apk update && apk add --no-cache \
 # ======
 
 ENV GLUU_VERSION=4.0.0-SNAPSHOT \
-    GLUU_BUILD_DATE=2019-09-03
+    GLUU_BUILD_DATE=2019-09-08
 
 RUN mkdir -p /opt/gluu/radius \
     && wget -q https://ox.gluu.org/maven/org/gluu/super-gluu-radius-server/${GLUU_VERSION}/super-gluu-radius-server-${GLUU_VERSION}.jar -O /opt/gluu/radius/super-gluu-radius-server.jar \
@@ -102,9 +102,9 @@ ENV GLUU_PERSISTENCE_TYPE=ldap \
 # Generic ENV
 # ===========
 
-ENV GLUU_MAX_RAM_PERCENTAGE=25.0 \
+ENV GLUU_MAX_RAM_PERCENTAGE=75.0 \
     GLUU_WAIT_MAX_TIME=300 \
-    GLUU_WAIT_SLEEP_DURATION=5
+    GLUU_WAIT_SLEEP_DURATION=10
 
 # ==========
 # misc stuff

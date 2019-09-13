@@ -66,7 +66,6 @@ fi
 
 # run Radius server
 exec java \
-    -server \
     -XX:+DisableExplicitGC \
     -XX:+UseContainerSupport \
     -XX:MaxRAMPercentage=$GLUU_MAX_RAM_PERCENTAGE \
@@ -76,5 +75,4 @@ exec java \
     -Dradius.base=/opt/gluu/radius \
     -Djava.io.tmpdir=/tmp \
     -cp /opt/gluu/radius/super-gluu-radius-server.jar \
-    org.gluu.radius.ServerEntry /etc/gluu/conf/radius/gluu-radius.properties \
-    -jar /opt/jetty/start.jar
+    org.gluu.radius.ServerEntry /etc/gluu/conf/radius/gluu-radius.properties
