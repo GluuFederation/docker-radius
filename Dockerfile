@@ -4,19 +4,16 @@ FROM openjdk:8-jre-alpine3.9
 # Alpine packages
 # ===============
 
-RUN apk update && apk add --no-cache \
-    wget \
-    unzip \
-    py-pip \
-    openssl \
-    git
+RUN apk update \
+    && apk add --no-cache py-pip openssl \
+    && apk add --no-cache --virtual build-deps wget unzip git
 
 # ======
 # Radius
 # ======
 
 ENV GLUU_VERSION=4.0.0-SNAPSHOT \
-    GLUU_BUILD_DATE=2019-09-08
+    GLUU_BUILD_DATE=2019-09-20
 
 RUN mkdir -p /opt/gluu/radius \
     && wget -q https://ox.gluu.org/maven/org/gluu/super-gluu-radius-server/${GLUU_VERSION}/super-gluu-radius-server-${GLUU_VERSION}.jar -O /opt/gluu/radius/super-gluu-radius-server.jar \
@@ -40,8 +37,14 @@ RUN wget -q https://github.com/krallin/tini/releases/download/v0.18.0/tini-stati
 
 COPY requirements.txt /tmp/requirements.txt
 RUN pip install -U pip \
-    && pip install --no-cache-dir -r /tmp/requirements.txt \
-    && apk del git
+    && pip install --no-cache-dir -r /tmp/requirements.txt
+
+# =======
+# Cleanup
+# =======
+
+RUN apk del build-deps \
+    && rm -rf /var/cache/apk/*
 
 # =======
 # License
@@ -90,12 +93,12 @@ ENV GLUU_SECRET_ADAPTER=vault \
 # Persistence ENV
 # ===============
 
-# available options: couchbase, ldap, hybrid
-# only takes affect when GLUU_PERSISTENCE_TYPE is hybrid
-# available options: default, user, cache, site, statistic
 ENV GLUU_PERSISTENCE_TYPE=ldap \
     GLUU_PERSISTENCE_LDAP_MAPPING=default \
     GLUU_COUCHBASE_URL=localhost \
+    GLUU_COUCHBASE_USER=admin \
+    GLUU_COUCHBASE_CERT_FILE=/etc/certs/couchbase.crt \
+    GLUU_COUCHBASE_PASSWORD_FILE=/etc/gluu/conf/couchbase_password \
     GLUU_LDAP_URL=localhost:1636
 
 # ===========

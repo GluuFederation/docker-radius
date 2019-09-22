@@ -1,6 +1,13 @@
 #!/bin/sh
 set -e
 
+run_entrypoint() {
+    if [ ! -f /deploy/touched ]; then
+        python /app/scripts/entrypoint.py
+        touch /deploy/touched
+    fi
+}
+
 # ==========
 # ENTRYPOINT
 # ==========
@@ -14,54 +21,12 @@ cat << LICENSE_ACK
 
 LICENSE_ACK
 
-# check persistence type
-case "${GLUU_PERSISTENCE_TYPE}" in
-    ldap|couchbase|hybrid)
-        ;;
-    *)
-        echo "unsupported GLUU_PERSISTENCE_TYPE value; please choose 'ldap', 'couchbase', or 'hybrid'"
-        exit 1
-        ;;
-esac
-
-# check mapping used by LDAP
-if [ "${GLUU_PERSISTENCE_TYPE}" = "hybrid" ]; then
-    case "${GLUU_PERSISTENCE_LDAP_MAPPING}" in
-        default|user|cache|site|token)
-            ;;
-        *)
-            echo "unsupported GLUU_PERSISTENCE_LDAP_MAPPING value; please choose 'default', 'user', 'cache', 'site', or 'token'"
-            exit 1
-            ;;
-    esac
-fi
-
-# run wait_for functions
-deps="config,secret"
-
-if [ "${GLUU_PERSISTENCE_TYPE}" = "hybrid" ]; then
-    deps="${deps},ldap,couchbase"
-else
-    deps="${deps},${GLUU_PERSISTENCE_TYPE}"
-fi
-
-deps="$deps,oxauth"
-
 if [ -f /etc/redhat-release ]; then
-    source scl_source enable python27 && gluu-wait --deps="$deps"
+    source scl_source enable python27 && python /app/scripts/wait.py
+    source scl_source enable python27 && run_entrypoint
 else
-    gluu-wait --deps="$deps"
-fi
-
-# run Python entrypoint
-if [ ! -f /deploy/touched ]; then
-    if [ -f /etc/redhat-release ]; then
-        source scl_source enable python27 && python /app/scripts/entrypoint.py
-    else
-        python /app/scripts/entrypoint.py
-    fi
-
-    touch /deploy/touched
+    python /app/scripts/wait.py
+    run_entrypoint
 fi
 
 # run Radius server
