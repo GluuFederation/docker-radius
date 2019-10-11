@@ -39,5 +39,6 @@ exec java \
     -Dradius.home=/opt/gluu/radius \
     -Dradius.base=/opt/gluu/radius \
     -Djava.io.tmpdir=/tmp \
-    -cp /opt/gluu/radius/super-gluu-radius-server.jar \
-    org.gluu.radius.ServerEntry /etc/gluu/conf/radius/gluu-radius.properties
+    -jar /opt/gluu/radius/super-gluu-radius-server.jar \
+    -server \
+    -config_file /etc/gluu/conf/radius/gluu-radius.properties
