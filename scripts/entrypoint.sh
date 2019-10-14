@@ -29,6 +29,8 @@ else
     run_entrypoint
 fi
 
+touch /etc/certs/gluu-radius.private-key.pem
+
 # run Radius server
 exec java \
     -XX:+DisableExplicitGC \
