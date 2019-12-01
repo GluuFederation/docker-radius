@@ -13,7 +13,7 @@ RUN apk update \
 # ======
 
 ENV GLUU_VERSION=4.0.1.Final \
-    GLUU_BUILD_DATE=2019-10-30
+    GLUU_BUILD_DATE=2019-11-30
 
 RUN mkdir -p /opt/gluu/radius \
     && wget -q https://ox.gluu.org/maven/org/gluu/super-gluu-radius-server/${GLUU_VERSION}/super-gluu-radius-server-${GLUU_VERSION}.jar -O /opt/gluu/radius/super-gluu-radius-server.jar \
@@ -117,7 +117,7 @@ LABEL name="Radius" \
     maintainer="Gluu Inc. <support@gluu.org>" \
     vendor="Gluu Federation" \
     version="4.0.1" \
-    release="02" \
+    release="03" \
     summary="Gluu RADIUS" \
     description="RADIUS integration for Gluu Server"
 
