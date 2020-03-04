@@ -2,11 +2,18 @@
 
 Here you can see an overview of changes between each release.
 
+## Version 4.0.1_04
+
+Released on March 5th, 2020.
+
+* Upgraded `super-gluu-radius-server`.
+* Added ENV for customizing Couchbase connection and scan consistency.
+
 ## Version 4.0.1_03
 
 Released on December 1st, 2019.
 
-* Upgraded `oxauth-client` v4.0.1.Final build at 2019-11-30.
+* Upgraded `super-gluu-radius-server` v4.0.1.Final build at 2019-11-30.
 
 ## Version 4.0.1_02
 
