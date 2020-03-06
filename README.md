@@ -4,7 +4,7 @@ Docker image packaging for Gluu Radius.
 
 ## Versions
 
-- Stable: N/A
+- Stable: `gluufederation/radius:4.1.0_01`
 - Unstable: `gluufederation/radius:4.1.0_dev`
 
 Refer to [Changelog](./CHANGES.md) for details on new features, bug fixes, or older releases.
@@ -43,6 +43,7 @@ The following environment variables are supported by the container:
 - `GLUU_WAIT_SLEEP_DURATION`: Delay between startup "health checks" (default to `10` seconds).
 - `GLUU_MAX_RAM_PERCENTAGE`: Used in conjunction with Docker memory limitations (`docker run -m <mem>`) to identify the percentage of the maximum amount of heap memory.
 - `GLUU_DEBUG_PORT`: port of remote debugging (if omitted, remote debugging will be disabled).
+- `GLUU_OXAUTH_BACKEND`: The oxAuth backend address, default is localhost:8081 (used in `wait_for.py` script).
 - `GLUU_PERSISTENCE_TYPE`: Persistence backend being used (one of `ldap`, `couchbase`, or `hybrid`; default to `ldap`).
 - `GLUU_PERSISTENCE_LDAP_MAPPING`: Specify data that should be saved in LDAP (one of `default`, `user`, `cache`, `site`, or `token`; default to `default`). Note this environment only takes effect when `GLUU_PERSISTENCE_TYPE` is set to `hybrid`.
 - `GLUU_LDAP_URL`: Address and port of LDAP server (default to `localhost:1636`); required if `GLUU_PERSISTENCE_TYPE` is set to `ldap` or `hybrid`.
@@ -52,4 +53,4 @@ The following environment variables are supported by the container:
 - `GLUU_COUCHBASE_PASSWORD_FILE`: Path to file contains Couchbase password (default to `/etc/gluu/conf/couchbase_password`); required if `GLUU_PERSISTENCE_TYPE` is set to `couchbase` or `hybrid`.
 - `GLUU_COUCHBASE_CONN_TIMEOUT`: Connect timeout used when a bucket is opened (default to `10000` milliseconds).
 - `GLUU_COUCHBASE_CONN_MAX_WAIT`: Maximum time to wait before retrying connection (default to `20000` milliseconds).
-- `GLUU_OXAUTH_BACKEND`: The oxAuth backend address, default is localhost:8081 (used in `wait_for.py` script)
+- `GLUU_COUCHBASE_SCAN_CONSISTENCY`: Default scan consistency; one of `not_bounded`, `request_plus`, or `statement_plus` (default to `not_bounded`).
