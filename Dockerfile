@@ -1,19 +1,21 @@
-FROM openjdk:8-jre-alpine3.9
+FROM adoptopenjdk/openjdk11:alpine-jre
 
 # ===============
 # Alpine packages
 # ===============
 
 RUN apk update \
-    && apk add --no-cache py-pip openssl \
-    && apk add --no-cache --virtual build-deps wget unzip git
+    && apk add --no-cache py3-pip openssl tini \
+    && apk add --no-cache --virtual build-deps wget unzip git \
+    && ln -sf /usr/bin/python3 /usr/bin/python \
+    && ln -sf /usr/bin/pip3 /usr/bin/pip
 
 # ======
 # Radius
 # ======
 
-ENV GLUU_VERSION=4.1.1.Final \
-    GLUU_BUILD_DATE="2020-05-10 17:12"
+ARG GLUU_VERSION=4.2.0-SNAPSHOT
+ARG GLUU_BUILD_DATE="2020-05-12 17:26"
 
 RUN mkdir -p /opt/gluu/radius \
     && wget -q https://ox.gluu.org/maven/org/gluu/super-gluu-radius-server/${GLUU_VERSION}/super-gluu-radius-server-${GLUU_VERSION}.jar -O /opt/gluu/radius/super-gluu-radius-server.jar \
@@ -23,13 +25,6 @@ RUN mkdir -p /opt/gluu/radius \
 
 # Radius ports
 EXPOSE 1812/udp 1813/udp
-
-# ====
-# Tini
-# ====
-
-RUN wget -q https://github.com/krallin/tini/releases/download/v0.18.0/tini-static -O /usr/bin/tini \
-    && chmod +x /usr/bin/tini
 
 # ======
 # Python
@@ -119,8 +114,8 @@ ENV GLUU_MAX_RAM_PERCENTAGE=75.0 \
 LABEL name="Radius" \
     maintainer="Gluu Inc. <support@gluu.org>" \
     vendor="Gluu Federation" \
-    version="4.1.1" \
-    release="01" \
+    version="4.2.0" \
+    release="dev" \
     summary="Gluu RADIUS" \
     description="RADIUS integration for Gluu Server"
 
@@ -134,22 +129,10 @@ COPY static/gluu-radius-logging.xml /etc/gluu/conf/radius/
 COPY templates /app/templates
 COPY scripts /app/scripts
 RUN chmod +x /app/scripts/entrypoint.sh
+# symlink JVM
+RUN mkdir -p /usr/lib/jvm/default-jvm /usr/java/latest \
+    && ln -sf /opt/java/openjdk /usr/lib/jvm/default-jvm/jre \
+    && ln -sf /usr/lib/jvm/default-jvm/jre /usr/java/latest/jre
 
-# # create non-root user
-# RUN useradd -ms /bin/sh --uid 1000 jetty \
-#     && usermod -a -G root jetty
-
-# # adjust ownership
-# RUN chown -R 1000:1000 /opt/gluu/jetty \
-#     && chown -R 1000:1000 /deploy \
-#     && chmod -R g+w /usr/lib/jvm/default-jvm/jre/lib/security/cacerts \
-#     && chgrp -R 0 /opt/gluu/jetty && chmod -R g=u /opt/gluu/jetty \
-#     && chgrp -R 0 /deploy && chmod -R g=u /deploy \
-#     && chgrp -R 0 /etc/certs && chmod -R g=u /etc/certs \
-#     && chgrp -R 0 /etc/gluu && chmod -R g=u /etc/gluu
-
-# # run as non-root user
-# USER 1000
-
-ENTRYPOINT ["tini", "-g", "--"]
-CMD ["/app/scripts/entrypoint.sh"]
+ENTRYPOINT ["tini", "-e", "143", "-g", "--"]
+CMD ["sh", "/app/scripts/entrypoint.sh"]
