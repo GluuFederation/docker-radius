@@ -33,6 +33,7 @@ EXPOSE 1812/udp 1813/udp
 # Python
 # ======
 
+RUN apk add --no-cache py3-cryptography
 COPY requirements.txt /tmp/requirements.txt
 RUN pip3 install -U pip \
     && pip3 install --no-cache-dir -r /tmp/requirements.txt
