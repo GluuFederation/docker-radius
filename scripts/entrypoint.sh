@@ -1,23 +1,15 @@
 #!/bin/sh
 set -e
 
-run_entrypoint() {
-    if [ ! -f /deploy/touched ]; then
-        python /app/scripts/entrypoint.py
-        touch /deploy/touched
-    fi
-}
-
 # ==========
 # ENTRYPOINT
 # ==========
 
-if [ -f /etc/redhat-release ]; then
-    source scl_source enable python27 && python /app/scripts/wait.py
-    source scl_source enable python27 && run_entrypoint
-else
-    python /app/scripts/wait.py
-    run_entrypoint
+python3 /app/scripts/wait.py
+
+if [ ! -f /deploy/touched ]; then
+    python3 /app/scripts/entrypoint.py
+    touch /deploy/touched
 fi
 
 touch /etc/certs/gluu-radius.private-key.pem
