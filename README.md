@@ -5,7 +5,7 @@ Docker image packaging for Gluu Radius.
 ## Versions
 
 - Stable: `gluufederation/radius:4.2.0_01`
-- Unstable: `gluufederation/radius:4.2.0_dev`
+- Unstable: `gluufederation/radius:4.2.1_dev`
 
 Refer to [Changelog](./CHANGES.md) for details on new features, bug fixes, or older releases.
 
