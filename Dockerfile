@@ -122,7 +122,7 @@ LABEL name="Radius" \
     maintainer="Gluu Inc. <support@gluu.org>" \
     vendor="Gluu Federation" \
     version="4.2.1" \
-    release="01" \
+    release="02" \
     summary="Gluu RADIUS" \
     description="RADIUS integration for Gluu Server"
 
