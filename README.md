@@ -5,7 +5,7 @@ Docker image packaging for Gluu Radius.
 ## Versions
 
 See [Releases](https://github.com/GluuFederation/docker-radius/releases) for stable versions.
-For bleeding-edge/unstable version, use `gluufederation/radius:4.2.1_dev`.
+For bleeding-edge/unstable version, use `gluufederation/radius:4.2.2_dev`.
 
 ## Environment Variables
 
