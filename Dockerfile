@@ -17,8 +17,8 @@ RUN apk update \
 # Radius
 # ======
 
-ENV GLUU_VERSION=4.2.2-SNAPSHOT
-ENV GLUU_BUILD_DATE="2020-12-11 14:10"
+ENV GLUU_VERSION=4.2.2.Final
+ENV GLUU_BUILD_DATE="2020-12-19 12:41"
 
 RUN mkdir -p /opt/gluu/radius \
     && wget -q https://ox.gluu.org/maven/org/gluu/super-gluu-radius-server/${GLUU_VERSION}/super-gluu-radius-server-${GLUU_VERSION}.jar -O /opt/gluu/radius/super-gluu-radius-server.jar \
