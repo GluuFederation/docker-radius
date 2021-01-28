@@ -8,7 +8,7 @@ from pygluu.containerlib.persistence import render_couchbase_properties
 from pygluu.containerlib.persistence import render_hybrid_properties
 from pygluu.containerlib.persistence import sync_ldap_truststore
 from pygluu.containerlib.persistence import sync_couchbase_truststore
-from pygluu.containerlib.persistence import sync_couchbase_cert
+# from pygluu.containerlib.persistence import sync_couchbase_cert
 from pygluu.containerlib.utils import get_server_certificate
 from pygluu.containerlib.utils import cert_to_truststore
 
@@ -48,7 +48,7 @@ def main():
             "/app/templates/gluu-couchbase.properties.tmpl",
             "/etc/gluu/conf/gluu-couchbase.properties",
         )
-        sync_couchbase_cert(manager)
+        # sync_couchbase_cert(manager)
         sync_couchbase_truststore(manager)
 
     if persistence_type == "hybrid":
